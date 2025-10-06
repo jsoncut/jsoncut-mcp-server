@@ -1,0 +1,241 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Image Generation Configuration",
+  "description": "Complete schema for jsoncut image generation with all layer types and positioning options",
+  "type": "object",
+  "required": ["width", "height", "layers"],
+  "properties": {
+    "width": {
+      "type": "integer",
+      "description": "Canvas width in pixels (max 4096px)",
+      "minimum": 1,
+      "maximum": 4096
+    },
+    "height": {
+      "type": "integer",
+      "description": "Canvas height in pixels (max 4096px)",
+      "minimum": 1,
+      "maximum": 4096
+    },
+    "backgroundColor": {
+      "type": "string",
+      "description": "Background color (hex, rgb, or named color). Default: transparent"
+    },
+    "format": {
+      "type": "string",
+      "description": "Output format",
+      "enum": ["png", "jpeg", "webp"],
+      "default": "png"
+    },
+    "quality": {
+      "type": "integer",
+      "description": "Quality for JPEG/WebP (1-100, default: 90)",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 90
+    },
+    "defaults": {
+      "type": "object",
+      "description": "Default properties applied to all layers or specific layer types",
+      "properties": {
+        "layer": {
+          "type": "object",
+          "description": "Properties applied to all layers",
+          "additionalProperties": true
+        },
+        "layerType": {
+          "type": "object",
+          "description": "Properties applied to specific layer types",
+          "properties": {
+            "text": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "image": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "rectangle": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "circle": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "gradient": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      }
+    },
+    "layers": {
+      "type": "array",
+      "description": "Array of layers rendered bottom to top (max 50 layers)",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Image layer - Display uploaded images",
+            "required": ["type", "path"],
+            "properties": {
+              "type": { "const": "image" },
+              "path": {
+                "type": "string",
+                "description": "Path to uploaded image (e.g., /image/2024-01-15/user123/file.jpg)"
+              },
+              "x": { "type": "number", "description": "X position in pixels" },
+              "y": { "type": "number", "description": "Y position in pixels" },
+              "width": { "type": "number", "description": "Width in pixels" },
+              "height": { "type": "number", "description": "Height in pixels" },
+              "position": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": ["center", "top", "bottom", "top-left", "top-right", "center-left", "center-right", "bottom-left", "bottom-right"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "y": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "originX": { "type": "string", "enum": ["left", "center", "right"] },
+                      "originY": { "type": "string", "enum": ["top", "center", "bottom"] }
+                    },
+                    "required": ["x", "y"]
+                  }
+                ]
+              },
+              "fit": {
+                "type": "string",
+                "enum": ["cover", "contain", "fill", "inside", "outside"],
+                "description": "How to fit the image"
+              },
+              "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+              "rotation": { "type": "number", "description": "Rotation in degrees" },
+              "blur": { "type": "number", "description": "Blur radius in pixels" },
+              "borderRadius": { "type": "number", "description": "Corner radius for rounded edges" }
+            }
+          },
+          {
+            "type": "object",
+            "description": "Text layer - Add text with custom fonts and styling",
+            "required": ["type", "text"],
+            "properties": {
+              "type": { "const": "text" },
+              "text": { "type": "string", "description": "Text content to display" },
+              "x": { "type": "number", "description": "X position in pixels" },
+              "y": { "type": "number", "description": "Y position in pixels" },
+              "width": { "type": "number", "description": "Width for text wrapping" },
+              "position": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": ["center", "top", "bottom", "top-left", "top-right", "center-left", "center-right", "bottom-left", "bottom-right"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "y": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "originX": { "type": "string", "enum": ["left", "center", "right"] },
+                      "originY": { "type": "string", "enum": ["top", "center", "bottom"] }
+                    },
+                    "required": ["x", "y"]
+                  }
+                ]
+              },
+              "fontSize": { "type": "number", "default": 24 },
+              "fontFamily": { "type": "string", "default": "Arial" },
+              "fontPath": { "type": "string", "description": "Path to custom font file" },
+              "color": { "type": "string", "default": "#000000" },
+              "align": { "type": "string", "enum": ["left", "center", "right"] },
+              "wrap": { "type": "boolean", "description": "Enable text wrapping" },
+              "lineHeight": { "type": "number", "description": "Line height multiplier" },
+              "backgroundColor": { "type": "string", "description": "Background color (single line only)" },
+              "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+              "rotation": { "type": "number", "description": "Rotation in degrees" },
+              "blur": { "type": "number", "description": "Blur radius in pixels" }
+            }
+          },
+          {
+            "type": "object",
+            "description": "Rectangle layer - Solid or outlined rectangular shapes",
+            "required": ["type", "x", "y", "width", "height"],
+            "properties": {
+              "type": { "const": "rectangle" },
+              "x": { "type": "number", "description": "X position in pixels" },
+              "y": { "type": "number", "description": "Y position in pixels" },
+              "width": { "type": "number", "description": "Width in pixels" },
+              "height": { "type": "number", "description": "Height in pixels" },
+              "fill": { "type": "string", "description": "Fill color" },
+              "stroke": { "type": "string", "description": "Border color" },
+              "strokeWidth": { "type": "number", "description": "Border width in pixels" },
+              "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+              "rotation": { "type": "number", "description": "Rotation in degrees" },
+              "blur": { "type": "number", "description": "Blur radius in pixels" },
+              "borderRadius": { "type": "number", "description": "Corner radius for rounded edges" }
+            }
+          },
+          {
+            "type": "object",
+            "description": "Circle layer - Circular and elliptical shapes",
+            "required": ["type", "x", "y", "width", "height"],
+            "properties": {
+              "type": { "const": "circle" },
+              "x": { "type": "number", "description": "X position in pixels" },
+              "y": { "type": "number", "description": "Y position in pixels" },
+              "width": { "type": "number", "description": "Width in pixels (equal to height for perfect circles)" },
+              "height": { "type": "number", "description": "Height in pixels" },
+              "fill": { "type": "string", "description": "Fill color" },
+              "stroke": { "type": "string", "description": "Border color" },
+              "strokeWidth": { "type": "number", "description": "Border width in pixels" },
+              "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+              "blur": { "type": "number", "description": "Blur radius in pixels" }
+            }
+          },
+          {
+            "type": "object",
+            "description": "Gradient layer - Linear or radial color gradients",
+            "required": ["type", "x", "y", "width", "height", "gradient"],
+            "properties": {
+              "type": { "const": "gradient" },
+              "x": { "type": "number", "description": "X position in pixels" },
+              "y": { "type": "number", "description": "Y position in pixels" },
+              "width": { "type": "number", "description": "Width in pixels" },
+              "height": { "type": "number", "description": "Height in pixels" },
+              "gradient": {
+                "type": "object",
+                "required": ["type", "colors"],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["linear", "radial"]
+                  },
+                  "colors": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 2,
+                    "description": "Array of color values"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical", "diagonal"],
+                    "description": "Direction for linear gradients only"
+                  }
+                }
+              },
+              "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+              "rotation": { "type": "number", "description": "Rotation in degrees" },
+              "blur": { "type": "number", "description": "Blur radius in pixels" }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "type": "image",
+  "config": {
+    "width": 1200,
+    "height": 630,
+    "backgroundColor": "#ffffff",
+    "format": "png",
+    "quality": 90,
+    "defaults": {
+      "layer": {
+        "opacity": 0.95
+      },
+      "layerType": {
+        "text": {
+          "fontFamily": "Arial",
+          "color": "#333333"
+        }
+      }
+    },
+    "layers": [
+      {
+        "type": "gradient",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 630,
+        "gradient": {
+          "type": "linear",
+          "colors": ["#667eea", "#764ba2"],
+          "direction": "diagonal"
+        }
+      },
+      {
+        "type": "rectangle",
+        "x": 100,
+        "y": 100,
+        "width": 1000,
+        "height": 430,
+        "fill": "#ffffff",
+        "opacity": 0.9,
+        "borderRadius": 20
+      },
+      {
+        "type": "image",
+        "path": "/image/2024-01-15/user123/placeholder-image.jpg",
+        "x": 150,
+        "y": 150,
+        "width": 400,
+        "height": 300,
+        "fit": "cover",
+        "borderRadius": 10
+      },
+      {
+        "type": "text",
+        "text": "Welcome to JsonCut",
+        "position": {
+          "x": 0.7,
+          "y": 0.35,
+          "originX": "center",
+          "originY": "center"
+        },
+        "fontSize": 48,
+        "color": "#333333",
+        "align": "center"
+      },
+      {
+        "type": "text",
+        "text": "Create stunning images with JSON configurations. Layer-based system with full control over positioning, styling, and effects.",
+        "x": 850,
+        "y": 280,
+        "width": 400,
+        "fontSize": 18,
+        "color": "#666666",
+        "align": "center",
+        "wrap": true,
+        "lineHeight": 1.5
+      },
+      {
+        "type": "circle",
+        "x": 600,
+        "y": 480,
+        "width": 80,
+        "height": 80,
+        "fill": "#4ecdc4",
+        "opacity": 0.8
+      },
+      {
+        "type": "text",
+        "text": "Start Now",
+        "x": 640,
+        "y": 520,
+        "fontSize": 20,
+        "color": "#ffffff",
+        "align": "center"
+      }
+    ]
+  }
+}

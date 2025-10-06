@@ -1,0 +1,180 @@
+{
+  "type": "video",
+  "config": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "format": "mp4",
+    "audioFilePath": "/audio/user123/background-music.mp3",
+    "loopAudio": true,
+    "outputVolume": 0.7,
+    "keepSourceAudio": true,
+    "audioTracks": [
+      {
+        "path": "/audio/user123/voiceover.wav",
+        "mixVolume": 0.9,
+        "start": 3,
+        "cutFrom": 0,
+        "cutTo": 10
+      }
+    ],
+    "audioNorm": {
+      "enable": true,
+      "gaussSize": 5,
+      "maxGain": 28
+    },
+    "defaults": {
+      "duration": 3,
+      "layer": {
+        "fontPath": "/font/user123/custom-font.ttf"
+      },
+      "layerType": {
+        "title": {
+          "fontSize": 64,
+          "textColor": "#ffffff",
+          "position": "center"
+        },
+        "subtitle": {
+          "fontSize": 32,
+          "textColor": "#cccccc"
+        }
+      }
+    },
+    "clips": [
+      {
+        "duration": 3,
+        "layers": [
+          {
+            "type": "title-background",
+            "text": "Welcome to JsonCut",
+            "textColor": "#ffffff",
+            "fontSize": 72,
+            "position": "center",
+            "background": {
+              "type": "linear-gradient",
+              "colors": ["#667eea", "#764ba2"],
+              "direction": "diagonal"
+            }
+          }
+        ],
+        "transition": {
+          "name": "fade",
+          "duration": 1
+        }
+      },
+      {
+        "duration": 5,
+        "layers": [
+          {
+            "type": "video",
+            "path": "/video/user123/intro-clip.mp4",
+            "resizeMode": "cover",
+            "cutFrom": 0,
+            "cutTo": 5,
+            "zoomDirection": "in",
+            "zoomAmount": 0.1,
+            "mixVolume": 0.8
+          },
+          {
+            "type": "subtitle",
+            "text": "Professional video generation",
+            "fontSize": 36,
+            "textColor": "#ffffff",
+            "position": "bottom"
+          }
+        ],
+        "transition": {
+          "name": "circleopen",
+          "duration": 1.2
+        }
+      },
+      {
+        "duration": 4,
+        "layers": [
+          {
+            "type": "image",
+            "path": "/image/user123/product-shot.jpg",
+            "resizeMode": "cover",
+            "zoomDirection": "out",
+            "zoomAmount": 0.15
+          },
+          {
+            "type": "image-overlay",
+            "path": "/image/user123/logo.png",
+            "position": "top-right",
+            "width": 0.2,
+            "height": 0.2,
+            "start": 0.5,
+            "stop": 3.5
+          },
+          {
+            "type": "title",
+            "text": "Amazing Features",
+            "fontSize": 56,
+            "textColor": "#ffffff",
+            "position": "center"
+          },
+          {
+            "type": "audio",
+            "path": "/audio/user123/sound-effect.mp3",
+            "mixVolume": 0.6,
+            "cutFrom": 0,
+            "cutTo": 4
+          }
+        ],
+        "transition": {
+          "name": "GlitchDisplace",
+          "duration": 0.8
+        }
+      },
+      {
+        "duration": 3,
+        "layers": [
+          {
+            "type": "fill-color",
+            "color": "#2c3e50"
+          },
+          {
+            "type": "news-title",
+            "text": "BREAKING: New Release",
+            "textColor": "#ffffff",
+            "backgroundColor": "#e74c3c",
+            "position": "bottom"
+          },
+          {
+            "type": "detached-audio",
+            "path": "/audio/user123/alert.wav",
+            "start": 0.5,
+            "mixVolume": 0.8
+          }
+        ],
+        "transition": {
+          "name": "wipeLeft",
+          "duration": 0.6
+        }
+      },
+      {
+        "duration": 4,
+        "layers": [
+          {
+            "type": "radial-gradient",
+            "colors": ["#ff6b6b", "#4ecdc4"]
+          },
+          {
+            "type": "title",
+            "text": "Get Started Today",
+            "fontSize": 64,
+            "textColor": "#ffffff",
+            "position": "center"
+          },
+          {
+            "type": "subtitle",
+            "text": "Create amazing videos with JSON",
+            "fontSize": 28,
+            "textColor": "#ffffff"
+          }
+        ]
+      }
+    ]
+  }
+}

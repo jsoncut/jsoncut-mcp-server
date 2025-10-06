@@ -1,0 +1,840 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Video Generation Configuration",
+  "description": "Complete schema for creating video generation jobs with jsoncut API based on official documentation",
+  "type": "object",
+  "required": ["clips"],
+  "properties": {
+    "width": {
+      "type": "integer",
+      "description": "Video width in pixels",
+      "minimum": 1,
+      "maximum": 4096,
+      "default": 1280
+    },
+    "height": {
+      "type": "integer",
+      "description": "Video height in pixels",
+      "minimum": 1,
+      "maximum": 4096,
+      "default": 720
+    },
+    "fps": {
+      "type": "integer",
+      "description": "Frames per second",
+      "minimum": 1,
+      "maximum": 120,
+      "default": 25,
+      "enum": [24, 25, 30, 50, 60, 120]
+    },
+    "format": {
+      "type": "string",
+      "description": "Output video format",
+      "enum": ["mp4", "mov"],
+      "default": "mp4"
+    },
+    "fast": {
+      "type": "boolean",
+      "description": "Enable fast processing mode (e.g. for preview)",
+      "default": false
+    },
+    "audioFilePath": {
+      "type": "string",
+      "description": "Path to background audio file (plays throughout entire video)",
+      "pattern": "^/"
+    },
+    "loopAudio": {
+      "type": "boolean",
+      "description": "Automatically loop background audio if shorter than video",
+      "default": false
+    },
+    "outputVolume": {
+      "type": "number",
+      "description": "Final output volume (0-1)",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 1
+    },
+    "keepSourceAudio": {
+      "type": "boolean",
+      "description": "Keep original audio from video layers (required for audio layers)",
+      "default": false
+    },
+    "clipsAudioVolume": {
+      "type": "number",
+      "description": "Volume for audio from clips relative to tracks (0-1)",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 1
+    },
+    "audioTracks": {
+      "type": "array",
+      "description": "Multiple audio tracks with independent timing",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Path to audio file",
+            "pattern": "^/"
+          },
+          "mixVolume": {
+            "type": "number",
+            "description": "Relative volume for this track (0-1)",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 1
+          },
+          "start": {
+            "type": "number",
+            "description": "Start time in video timeline (seconds)",
+            "minimum": 0,
+            "default": 0
+          },
+          "cutFrom": {
+            "type": "number",
+            "description": "Start position in audio file (seconds)",
+            "minimum": 0,
+            "default": 0
+          },
+          "cutTo": {
+            "type": "number",
+            "description": "End position in audio file (seconds)",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "audioNorm": {
+      "type": "object",
+      "description": "Audio normalization with ducking effects",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "description": "Enable audio normalization",
+          "default": false
+        },
+        "gaussSize": {
+          "type": "integer",
+          "description": "Gaussian filter size for smoothing (1-10)",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 5
+        },
+        "maxGain": {
+          "type": "integer",
+          "description": "Maximum gain adjustment in decibels",
+          "minimum": 0,
+          "maximum": 50,
+          "default": 30
+        }
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "description": "Default properties for clips and layers",
+      "properties": {
+        "duration": {
+          "type": "number",
+          "description": "Default clip duration in seconds",
+          "minimum": 0.1
+        },
+        "transition": {
+          "type": "object",
+          "description": "Default transition for all clips",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Transition effect name"
+            },
+            "duration": {
+              "type": "number",
+              "description": "Transition duration in seconds",
+              "minimum": 0
+            }
+          }
+        },
+        "layer": {
+          "type": "object",
+          "description": "Default properties for all layers",
+          "properties": {
+            "fontPath": {
+              "type": "string",
+              "description": "Default font path for text layers",
+              "pattern": "^/"
+            }
+          }
+        },
+        "layerType": {
+          "type": "object",
+          "description": "Default properties per layer type",
+          "properties": {
+            "title": {
+              "type": "object",
+              "description": "Default properties for title layers"
+            },
+            "subtitle": {
+              "type": "object",
+              "description": "Default properties for subtitle layers"
+            }
+          }
+        }
+      }
+    },
+    "clips": {
+      "type": "array",
+      "description": "Array of video clips/scenes that make up the video",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["layers"],
+        "properties": {
+          "duration": {
+            "type": "number",
+            "description": "Clip duration in seconds (uses default if omitted)",
+            "minimum": 0.1
+          },
+          "layers": {
+            "type": "array",
+            "description": "Layers for this clip (rendered bottom to top)",
+            "minItems": 1,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": ["type", "path"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "video",
+                      "description": "Video layer type"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "Path to video file",
+                      "pattern": "^/"
+                    },
+                    "resizeMode": {
+                      "type": "string",
+                      "description": "How to fit video in frame",
+                      "enum": ["contain", "contain-blur", "cover", "stretch"],
+                      "default": "contain-blur"
+                    },
+                    "cutFrom": {
+                      "type": "number",
+                      "description": "Start time in source video (seconds)",
+                      "minimum": 0,
+                      "default": 0
+                    },
+                    "cutTo": {
+                      "type": "number",
+                      "description": "End time in source video (seconds)",
+                      "minimum": 0
+                    },
+                    "width": {
+                      "type": "number",
+                      "description": "Video width (conflicts with resizeMode)"
+                    },
+                    "height": {
+                      "type": "number",
+                      "description": "Video height (conflicts with resizeMode)"
+                    },
+                    "mixVolume": {
+                      "type": "number",
+                      "description": "Relative volume for video audio (0-1)",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "default": 1
+                    },
+                    "zoomDirection": {
+                      "type": ["string", "null"],
+                      "description": "Ken Burns effect direction",
+                      "enum": ["in", "out", "left", "right", null]
+                    },
+                    "zoomAmount": {
+                      "type": "number",
+                      "description": "Ken Burns zoom intensity",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "default": 0.1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "path"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "image",
+                      "description": "Image layer type"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "Path to image file",
+                      "pattern": "^/"
+                    },
+                    "resizeMode": {
+                      "type": "string",
+                      "description": "How to fit image in frame",
+                      "enum": ["contain", "cover", "stretch"],
+                      "default": "cover"
+                    },
+                    "position": {
+                      "description": "Position within frame (string or object)",
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "enum": ["center", "top", "bottom", "top-left", "top-right", "center-left", "center-right", "bottom-left", "bottom-right"]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                            "y": { "type": "number", "minimum": 0, "maximum": 1 },
+                            "originX": { "type": "string", "enum": ["left", "center", "right"] },
+                            "originY": { "type": "string", "enum": ["top", "center", "bottom"] }
+                          }
+                        }
+                      ]
+                    },
+                    "width": {
+                      "type": "number",
+                      "description": "Relative (0-1) or absolute pixels"
+                    },
+                    "height": {
+                      "type": "number",
+                      "description": "Relative (0-1) or absolute pixels"
+                    },
+                    "zoomDirection": {
+                      "type": ["string", "null"],
+                      "description": "Ken Burns effect direction",
+                      "enum": ["in", "out", "left", "right", null],
+                      "default": "in"
+                    },
+                    "zoomAmount": {
+                      "type": "number",
+                      "description": "Ken Burns zoom intensity",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "default": 0.1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "path"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "image-overlay",
+                      "description": "Image overlay layer type"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "Path to image file",
+                      "pattern": "^/"
+                    },
+                    "position": {
+                      "description": "Position within frame",
+                      "oneOf": [
+                        { "type": "string" },
+                        { "type": "object" }
+                      ]
+                    },
+                    "width": {
+                      "type": "number",
+                      "description": "Relative (0-1) or absolute pixels"
+                    },
+                    "height": {
+                      "type": "number",
+                      "description": "Relative (0-1) or absolute pixels"
+                    },
+                    "start": {
+                      "type": "number",
+                      "description": "Start time when overlay appears (seconds)",
+                      "minimum": 0
+                    },
+                    "stop": {
+                      "type": "number",
+                      "description": "Stop time when overlay disappears (seconds)",
+                      "minimum": 0
+                    },
+                    "zoomDirection": {
+                      "type": ["string", "null"],
+                      "enum": ["in", "out", "left", "right", null]
+                    },
+                    "zoomAmount": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "default": 0.1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "text"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "title",
+                      "description": "Title layer type"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Title text content (keep it short)"
+                    },
+                    "textColor": {
+                      "type": "string",
+                      "description": "Text color in hex format",
+                      "pattern": "^#[0-9A-Fa-f]{6}$",
+                      "default": "#ffffff"
+                    },
+                    "fontSize": {
+                      "type": "integer",
+                      "description": "Font size in pixels",
+                      "minimum": 8,
+                      "maximum": 500
+                    },
+                    "fontPath": {
+                      "type": "string",
+                      "description": "Path to custom font file",
+                      "pattern": "^/"
+                    },
+                    "position": {
+                      "description": "Position within frame",
+                      "oneOf": [
+                        { "type": "string" },
+                        { "type": "object" }
+                      ]
+                    },
+                    "zoomDirection": {
+                      "type": ["string", "null"],
+                      "enum": ["in", "out", "left", "right", null]
+                    },
+                    "zoomAmount": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "default": 0.1
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "text"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "subtitle",
+                      "description": "Subtitle layer type"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Subtitle text content"
+                    },
+                    "textColor": {
+                      "type": "string",
+                      "pattern": "^#[0-9A-Fa-f]{6}$",
+                      "default": "#ffffff"
+                    },
+                    "fontSize": {
+                      "type": "integer",
+                      "minimum": 8,
+                      "maximum": 500
+                    },
+                    "fontPath": {
+                      "type": "string",
+                      "pattern": "^/"
+                    },
+                    "position": {
+                      "description": "Position within frame",
+                      "oneOf": [
+                        { "type": "string", "enum": ["top", "bottom", "center"] },
+                        { "type": "object" }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "text"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "news-title",
+                      "description": "News title layer type (breaking news style)"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "News title text content"
+                    },
+                    "textColor": {
+                      "type": "string",
+                      "pattern": "^#[0-9A-Fa-f]{6}$",
+                      "default": "#ffffff"
+                    },
+                    "backgroundColor": {
+                      "type": "string",
+                      "description": "Background color for news banner",
+                      "pattern": "^#[0-9A-Fa-f]{6}$"
+                    },
+                    "fontPath": {
+                      "type": "string",
+                      "pattern": "^/"
+                    },
+                    "position": {
+                      "oneOf": [
+                        { "type": "string" },
+                        { "type": "object" }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "text"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "title-background",
+                      "description": "Title with full-screen background"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Title text content"
+                    },
+                    "textColor": {
+                      "type": "string",
+                      "pattern": "^#[0-9A-Fa-f]{6}$",
+                      "default": "#ffffff"
+                    },
+                    "fontSize": {
+                      "type": "integer",
+                      "minimum": 8,
+                      "maximum": 500
+                    },
+                    "fontPath": {
+                      "type": "string",
+                      "pattern": "^/"
+                    },
+                    "position": {
+                      "oneOf": [
+                        { "type": "string" },
+                        { "type": "object" }
+                      ]
+                    },
+                    "background": {
+                      "type": "object",
+                      "description": "Full-screen background configuration",
+                      "required": ["type"],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["fill-color", "linear-gradient", "radial-gradient"]
+                        },
+                        "color": {
+                          "type": "string",
+                          "description": "Color for fill-color type",
+                          "pattern": "^#[0-9A-Fa-f]{6}$"
+                        },
+                        "colors": {
+                          "type": "array",
+                          "description": "Colors for gradient types",
+                          "items": { "type": "string" }
+                        },
+                        "direction": {
+                          "type": "string",
+                          "description": "Direction for linear-gradient",
+                          "enum": ["horizontal", "vertical", "diagonal"]
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "text"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "slide-in-text",
+                      "description": "Animated text that slides into view"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Text content"
+                    },
+                    "fontSize": {
+                      "type": "number",
+                      "description": "Relative font size (0-1)",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "textColor": {
+                      "type": "string",
+                      "pattern": "^#[0-9A-Fa-f]{6}$",
+                      "default": "#ffffff"
+                    },
+                    "position": {
+                      "oneOf": [
+                        { "type": "string" },
+                        { "type": "object" }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "path"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "audio",
+                      "description": "Audio layer (requires keepSourceAudio: true)"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "Path to audio file",
+                      "pattern": "^/"
+                    },
+                    "mixVolume": {
+                      "type": "number",
+                      "description": "Relative volume when mixing (0-1)",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "default": 1
+                    },
+                    "cutFrom": {
+                      "type": "number",
+                      "description": "Start time in audio file (seconds)",
+                      "minimum": 0,
+                      "default": 0
+                    },
+                    "cutTo": {
+                      "type": "number",
+                      "description": "End time in audio file (seconds)",
+                      "minimum": 0
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "path"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "detached-audio",
+                      "description": "Audio layer with clip-relative timing"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "Path to audio file",
+                      "pattern": "^/"
+                    },
+                    "start": {
+                      "type": "number",
+                      "description": "Start time relative to clip start (seconds)",
+                      "minimum": 0,
+                      "default": 0
+                    },
+                    "mixVolume": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1,
+                      "default": 1
+                    },
+                    "cutFrom": {
+                      "type": "number",
+                      "minimum": 0,
+                      "default": 0
+                    },
+                    "cutTo": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "color"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "fill-color",
+                      "description": "Solid color background"
+                    },
+                    "color": {
+                      "type": "string",
+                      "description": "Background color",
+                      "pattern": "^#[0-9A-Fa-f]{6,8}$"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "colors"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "linear-gradient",
+                      "description": "Linear gradient background"
+                    },
+                    "colors": {
+                      "type": "array",
+                      "description": "Array of color values",
+                      "items": { "type": "string" },
+                      "minItems": 2
+                    },
+                    "direction": {
+                      "type": "string",
+                      "description": "Gradient direction",
+                      "enum": ["horizontal", "vertical", "diagonal"],
+                      "default": "vertical"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type", "colors"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "radial-gradient",
+                      "description": "Radial gradient background"
+                    },
+                    "colors": {
+                      "type": "array",
+                      "description": "Array of color values",
+                      "items": { "type": "string" },
+                      "minItems": 2
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "rainbow-colors",
+                      "description": "Animated rainbow gradient effect"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["type"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "pause",
+                      "description": "Black screen pause"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "transition": {
+            "type": "object",
+            "description": "Transition effect to next clip",
+            "required": ["name", "duration"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Transition effect name",
+                "enum": [
+                  "fade", "fadecolor", "fadegrayscale",
+                  "wipeLeft", "wipeRight", "wipeUp", "wipeDown",
+                  "directionalwipe", "directionalwarp", "Directional",
+                  "circle", "circleopen", "CircleCrop", "hexagonalize", "kaleidoscope", "pinwheel",
+                  "GridFlip", "randomsquares", "Mosaic", "BowTieHorizontal", "BowTieVertical",
+                  "cube", "SimpleZoom", "CrossZoom", "DreamyZoom", "ZoomInCircles",
+                  "rotate_scale_fade", "Bounce",
+                  "GlitchDisplace", "GlitchMemories", "crosshatch", "windowblinds", "windowslice", "pixelize",
+                  "displacement", "crosswarp", "Swirl", "LinearBlur",
+                  "WaterDrop", "ripple", "luminance_melt", "wind", "undulatingBurnOut", "burn",
+                  "Dreamy", "ColourDistance", "colorphase", "multiply_blend",
+                  "CrazyParametricFun", "polar_function", "perlin", "angular", "squeeze", "swap", "morph",
+                  "ButterflyWaveScrawler", "DoomScreenTransition", "InvertedPageCurl", "PolkaDotsCurtain",
+                  "Radial", "StereoViewer", "cannabisleaf", "doorway", "flyeye", "heart", "luma", "squareswire"
+                ]
+              },
+              "duration": {
+                "type": "number",
+                "description": "Transition duration in seconds",
+                "minimum": 0
+              },
+              "audioOutCurve": {
+                "type": "string",
+                "description": "Audio fade-out curve",
+                "enum": ["tri", "exp", "linear"],
+                "default": "tri"
+              },
+              "audioInCurve": {
+                "type": "string",
+                "description": "Audio fade-in curve",
+                "enum": ["tri", "exp", "linear"],
+                "default": "tri"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "format": "mp4",
+      "audioFilePath": "/audio/user123/background-music.mp3",
+      "loopAudio": true,
+      "outputVolume": 0.8,
+      "clips": [
+        {
+          "duration": 3,
+          "layers": [
+            {
+              "type": "fill-color",
+              "color": "#667eea"
+            },
+            {
+              "type": "title",
+              "text": "Welcome",
+              "fontSize": 64,
+              "textColor": "#ffffff",
+              "position": "center"
+            }
+          ],
+          "transition": {
+            "name": "fade",
+            "duration": 1
+          }
+        },
+        {
+          "duration": 5,
+          "layers": [
+            {
+              "type": "video",
+              "path": "/video/user123/intro.mp4",
+              "resizeMode": "cover",
+              "cutFrom": 0,
+              "cutTo": 5
+            },
+            {
+              "type": "subtitle",
+              "text": "Your message here",
+              "fontSize": 32,
+              "textColor": "#ffffff"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
