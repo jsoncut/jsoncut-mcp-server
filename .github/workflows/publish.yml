@@ -66,8 +66,14 @@ jobs:
         if: steps.check_npm.outputs.exists == 'false'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          npm version $VERSION --no-git-tag-version
-          echo "Updated package.json to version $VERSION"
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          
+          if [ "$CURRENT_VERSION" != "$VERSION" ]; then
+            npm version $VERSION --no-git-tag-version
+            echo "Updated package.json from $CURRENT_VERSION to $VERSION"
+          else
+            echo "package.json already at version $VERSION, skipping update"
+          fi
 
       - name: Update version in src/index.ts
         if: steps.check_npm.outputs.exists == 'false'
@@ -91,8 +97,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json package-lock.json src/index.ts
-          git commit -m "chore: bump version to $VERSION" || echo "No changes to commit"
-          git push
+          
+          if git diff --cached --quiet; then
+            echo "No version changes to commit"
+          else
+            git commit -m "chore: bump version to $VERSION"
+            git push
+          fi
 
       - name: Create Git Tag
         if: steps.check_npm.outputs.exists == 'false' && steps.check_tag.outputs.exists == 'false'
