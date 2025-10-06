@@ -5,6 +5,12 @@ on:
     branches: [main]
     paths:
       - 'CHANGELOG.md'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (leave empty to extract from CHANGELOG.md)'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -23,13 +29,19 @@ jobs:
       - name: Extract version from CHANGELOG
         id: version
         run: |
-          VERSION=$(grep -m 1 "^## \[.*\]" CHANGELOG.md | sed -n 's/## \[\(.*\)\].*/\1/p')
-          if [ -z "$VERSION" ]; then
-            echo "Error: Could not extract version from CHANGELOG.md"
-            exit 1
+          # Use manual input version if provided, otherwise extract from CHANGELOG
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+            echo "Using manual version: $VERSION"
+          else
+            VERSION=$(grep -m 1 "^## \[.*\]" CHANGELOG.md | sed -n 's/## \[\(.*\)\].*/\1/p')
+            if [ -z "$VERSION" ]; then
+              echo "Error: Could not extract version from CHANGELOG.md"
+              exit 1
+            fi
+            echo "Extracted version from CHANGELOG: $VERSION"
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Extracted version: $VERSION"
 
       - name: Check if version exists on npm
         id: check_npm
