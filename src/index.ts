@@ -10,14 +10,17 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import axios, { AxiosInstance } from 'axios';
 import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import dotenv from 'dotenv';
 
-// In CommonJS, __dirname is already defined as the directory of the current module
-// Load environment variables from .env file
-dotenv.config({ path: join(__dirname, '.env') });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-// Load schemas (in CommonJS __dirname points to dist/, so we go up one level)
+// Load environment variables from .env file
+dotenv.config({ path: join(__dirname, '..', '.env') });
+
+// Load schemas
 const imageSchema = JSON.parse(
   readFileSync(join(__dirname, '..', 'schemas', 'image-schema.json'), 'utf-8')
 );

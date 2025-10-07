@@ -5,6 +5,13 @@ All notable changes to the Jsoncut MCP Server will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2025-10-07
+
+### Fixed
+- Reverted to ES Modules (`"type": "module"`) for proper npx compatibility
+- Fixed npx execution issue - CommonJS was causing bin entry resolution problems
+- TypeScript now compiles to ES2022 modules for better npx support
+
 ## [1.0.3] - 2025-10-07
 
 ### Fixed
