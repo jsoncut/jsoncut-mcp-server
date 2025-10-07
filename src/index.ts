@@ -44,7 +44,7 @@ class JsoncutMCPServer {
     this.server = new Server(
       {
         name: 'jsoncut-mcp-server',
-        version: '1.0.1',
+        version: '1.0.2',
       },
       {
         capabilities: {
