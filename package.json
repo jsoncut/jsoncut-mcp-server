@@ -1,6 +1,6 @@
 {
   "name": "@jsoncut/mcp-server",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Model Context Protocol server for jsoncut API - Generate images and videos using AI",
   "main": "dist/index.js",
   "type": "module",
