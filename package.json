@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Model Context Protocol server for jsoncut API - Generate images and videos using AI",
   "main": "dist/index.js",
-  "type": "module",
   "bin": {
     "jsoncut-mcp": "./dist/index.js"
   },
