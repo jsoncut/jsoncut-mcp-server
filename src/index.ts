@@ -46,7 +46,7 @@ class JsoncutMCPServer {
     this.server = new Server(
       {
         name: 'jsoncut-mcp-server',
-        version: '1.0.5',
+        version: '1.1.0',
       },
       {
         capabilities: {
@@ -185,7 +185,7 @@ Returns a complete configuration object that can be used with the validate_confi
 - borderRadius: rounded corners (image, rectangle)
 
 **Text Features:**
-- Custom fonts via fontPath
+- Custom fonts via fontPath or Google Fonts via googleFont (format: 'FontName:weight' e.g. 'Roboto:600')
 - Text wrapping with width and lineHeight
 - Alignment: left, center, right
 - backgroundColor (single line only)
@@ -246,7 +246,7 @@ File paths should be placeholders like "/image/2024-01-15/userXXX/filename.ext" 
                 type: 'array',
                 description: `Array of layer objects (max 50). Layer types:
 - image: { type: "image", path, x/y/position, width, height, fit, opacity, rotation, blur, borderRadius }
-- text: { type: "text", text, x/y/position, fontSize, fontPath, color, align, wrap, width, lineHeight, backgroundColor, opacity, rotation, blur }
+- text: { type: "text", text, x/y/position, fontSize, fontPath/googleFont, color, align, wrap, width, lineHeight, backgroundColor, opacity, rotation, blur }
 - rectangle: { type: "rectangle", x, y, width, height, fill, stroke, strokeWidth, opacity, rotation, blur, borderRadius }
 - circle: { type: "circle", x, y, width, height, fill, stroke, strokeWidth, opacity, blur }
 - gradient: { type: "gradient", x, y, width, height, gradient: { type: linear/radial, colors: [], direction: horizontal/vertical/diagonal }, opacity, rotation, blur }`,
@@ -279,7 +279,7 @@ Returns a complete configuration object that can be used with the validate_confi
 - video: Display video files with timing control and Ken Burns effects
 - image: Static images with positioning and Ken Burns effects
 - image-overlay: Images positioned over other content with timing
-- title: Large headline text with custom fonts
+- title: Large headline text with custom fonts (fontPath) or Google Fonts (googleFont: 'FontName:weight')
 - subtitle: Smaller text for captions
 - news-title: Breaking news style with colored backgrounds
 - title-background: Titles with full-screen backgrounds

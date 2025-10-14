@@ -161,8 +161,12 @@
           "properties": {
             "fontPath": {
               "type": "string",
-              "description": "Default font path for text layers",
+              "description": "Default font path for text layers (cannot be used with googleFont)",
               "pattern": "^/"
+            },
+            "googleFont": {
+              "type": "string",
+              "description": "Default Google Font for text layers in format 'FontName:weight' e.g. 'Roboto:600' (cannot be used with fontPath)"
             }
           }
         },
@@ -234,11 +238,15 @@
                     },
                     "width": {
                       "type": "number",
-                      "description": "Video width (conflicts with resizeMode)"
+                      "description": "Relative video width (0-1 of full video, conflicts with resizeMode)",
+                      "minimum": 0,
+                      "maximum": 1
                     },
                     "height": {
                       "type": "number",
-                      "description": "Video height (conflicts with resizeMode)"
+                      "description": "Relative video height (0-1 of full video, conflicts with resizeMode)",
+                      "minimum": 0,
+                      "maximum": 1
                     },
                     "mixVolume": {
                       "type": "number",
@@ -301,11 +309,15 @@
                     },
                     "width": {
                       "type": "number",
-                      "description": "Relative (0-1) or absolute pixels"
+                      "description": "Relative overlay width (0-1 of full video)",
+                      "minimum": 0,
+                      "maximum": 1
                     },
                     "height": {
                       "type": "number",
-                      "description": "Relative (0-1) or absolute pixels"
+                      "description": "Relative overlay height (0-1 of full video)",
+                      "minimum": 0,
+                      "maximum": 1
                     },
                     "zoomDirection": {
                       "type": ["string", "null"],
@@ -400,8 +412,12 @@
                     },
                     "fontPath": {
                       "type": "string",
-                      "description": "Path to custom font file",
+                      "description": "Path to custom font file (cannot be used with googleFont)",
                       "pattern": "^/"
+                    },
+                    "googleFont": {
+                      "type": "string",
+                      "description": "Google Font specification in format 'FontName:weight' e.g. 'Roboto:600' (cannot be used with fontPath)"
                     },
                     "position": {
                       "description": "Position within frame",
@@ -447,7 +463,12 @@
                     },
                     "fontPath": {
                       "type": "string",
+                      "description": "Path to custom font file (cannot be used with googleFont)",
                       "pattern": "^/"
+                    },
+                    "googleFont": {
+                      "type": "string",
+                      "description": "Google Font specification in format 'FontName:weight' e.g. 'Roboto:600' (cannot be used with fontPath)"
                     },
                     "position": {
                       "description": "Position within frame",
@@ -483,7 +504,12 @@
                     },
                     "fontPath": {
                       "type": "string",
+                      "description": "Path to custom font file (cannot be used with googleFont)",
                       "pattern": "^/"
+                    },
+                    "googleFont": {
+                      "type": "string",
+                      "description": "Google Font specification in format 'FontName:weight' e.g. 'Roboto:600' (cannot be used with fontPath)"
                     },
                     "position": {
                       "oneOf": [
@@ -518,7 +544,12 @@
                     },
                     "fontPath": {
                       "type": "string",
+                      "description": "Path to custom font file (cannot be used with googleFont)",
                       "pattern": "^/"
+                    },
+                    "googleFont": {
+                      "type": "string",
+                      "description": "Google Font specification in format 'FontName:weight' e.g. 'Roboto:600' (cannot be used with fontPath)"
                     },
                     "position": {
                       "oneOf": [
@@ -577,6 +608,15 @@
                       "type": "string",
                       "pattern": "^#[0-9A-Fa-f]{6}$",
                       "default": "#ffffff"
+                    },
+                    "fontPath": {
+                      "type": "string",
+                      "description": "Path to custom font file (cannot be used with googleFont)",
+                      "pattern": "^/"
+                    },
+                    "googleFont": {
+                      "type": "string",
+                      "description": "Google Font specification in format 'FontName:weight' e.g. 'Roboto:600' (cannot be used with fontPath)"
                     },
                     "position": {
                       "oneOf": [

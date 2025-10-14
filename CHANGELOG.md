@@ -5,6 +5,23 @@ All notable changes to the Jsoncut MCP Server will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-10-14
+
+### Added
+- **Google Fonts Support**: Added `googleFont` property to all text layers (both image and video generation)
+  - New property format: `"googleFont": "FontName:weight"` (e.g., `"Roboto:600"`)
+  - Serves as an alternative to `fontPath` property
+  - Cannot be used simultaneously with `fontPath`
+  - Fonts are automatically downloaded from Google Fonts in the background
+  - Applies to all video text layer types: title, subtitle, news-title, title-background, slide-in-text
+  - Applies to image text layers
+  - Can be set as a default in `defaults.layer.googleFont`
+
+### Changed
+- Updated both `image-schema.json` and `video-schema.json` to include the new `googleFont` property
+- Updated tool descriptions to mention Google Fonts support
+ - Enforced relative sizing (0–1 of full video) for `width`/`height` on `video` and `image-overlay` layers in `video-schema.json`; overall video `width`/`height` remain pixel-based
+
 ## [1.0.5] - 2025-10-07
 
 ### Fixed
