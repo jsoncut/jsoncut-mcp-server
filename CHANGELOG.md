@@ -5,6 +5,36 @@ All notable changes to the Jsoncut MCP Server will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-01-19
+
+### Added
+- **Title Layer Animation Styles**: New `style` property for title layers with three animation effects:
+  - `"fade-in"` - Smooth fade-in effect (default for title layers)
+  - `"word-by-word"` - Words appear sequentially in title layers
+  - `"letter-by-letter"` - Letters appear sequentially in title layers
+- **Enhanced Video Layer Positioning**: Video layers now support both position objects and position strings:
+  - Position objects: `{ x: 0-1, y: 0-1, originX: left|center|right, originY: top|center|bottom }`
+  - Position strings: `center`, `top`, `bottom`, `top-left`, `top-right`, `center-left`, `center-right`, `bottom-left`, `bottom-right`
+- **Enhanced Title Layer Positioning**: Title layers now support position objects with precise control:
+  - Same position object format as video layers
+  - Backward compatible with existing position strings
+- **Smart Zoom Deactivation**: Zoom effects are automatically disabled for title layers with:
+  - `"word-by-word"` style
+  - `"letter-by-letter"` style
+  - Zoom effects remain active for `"fade-in"` style and default title layers
+
+### Changed
+- **Video Layer Positioning**: Removed deprecated positioning parameters (`left`, `top`, `originX`, `originY`) from video layers
+- **Schema Updates**: Updated `video-schema.json` to include new animation styles and enhanced positioning
+- **Tool Descriptions**: Updated MCP server tool descriptions to reflect new positioning capabilities
+- **Examples**: Updated video examples to showcase new animation styles and positioning features
+
+### Technical Details
+- Based on Editly v0.16.0 changelog updates
+- Maintains full backward compatibility for existing configurations
+- All new parameters are optional with sensible defaults
+- Schema validation ensures proper configuration structure
+
 ## [1.1.0] - 2025-10-14
 
 ### Added

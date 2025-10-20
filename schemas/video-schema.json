@@ -255,6 +255,24 @@
                       "maximum": 1,
                       "default": 1
                     },
+                    "position": {
+                      "description": "Position within frame (string or object)",
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "enum": ["center", "top", "bottom", "top-left", "top-right", "center-left", "center-right", "bottom-left", "bottom-right"]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                            "y": { "type": "number", "minimum": 0, "maximum": 1 },
+                            "originX": { "type": "string", "enum": ["left", "center", "right"] },
+                            "originY": { "type": "string", "enum": ["top", "center", "bottom"] }
+                          }
+                        }
+                      ]
+                    },
                     "zoomDirection": {
                       "type": ["string", "null"],
                       "description": "Ken Burns effect direction",
@@ -398,6 +416,12 @@
                       "type": "string",
                       "description": "Title text content (keep it short)"
                     },
+                    "style": {
+                      "type": "string",
+                      "description": "Title layer animation style",
+                      "enum": ["fade-in", "word-by-word", "letter-by-letter"],
+                      "default": "fade-in"
+                    },
                     "textColor": {
                       "type": "string",
                       "description": "Text color in hex format",
@@ -420,18 +444,31 @@
                       "description": "Google Font specification in format 'FontName:weight' e.g. 'Roboto:600' (cannot be used with fontPath)"
                     },
                     "position": {
-                      "description": "Position within frame",
+                      "description": "Position within frame (string or object)",
                       "oneOf": [
-                        { "type": "string" },
-                        { "type": "object" }
+                        {
+                          "type": "string",
+                          "enum": ["center", "top", "bottom", "top-left", "top-right", "center-left", "center-right", "bottom-left", "bottom-right"]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                            "y": { "type": "number", "minimum": 0, "maximum": 1 },
+                            "originX": { "type": "string", "enum": ["left", "center", "right"] },
+                            "originY": { "type": "string", "enum": ["top", "center", "bottom"] }
+                          }
+                        }
                       ]
                     },
                     "zoomDirection": {
                       "type": ["string", "null"],
+                      "description": "Ken Burns effect direction (automatically disabled for word-by-word and letter-by-letter styles)",
                       "enum": ["in", "out", "left", "right", null]
                     },
                     "zoomAmount": {
                       "type": "number",
+                      "description": "Ken Burns zoom intensity (automatically disabled for word-by-word and letter-by-letter styles)",
                       "minimum": 0,
                       "maximum": 1,
                       "default": 0.1
@@ -846,9 +883,15 @@
             {
               "type": "title",
               "text": "Welcome",
+              "style": "word-by-word",
               "fontSize": 64,
               "textColor": "#ffffff",
-              "position": "center"
+              "position": {
+                "x": 0.5,
+                "y": 0.5,
+                "originX": "center",
+                "originY": "center"
+              }
             }
           ],
           "transition": {
@@ -863,6 +906,14 @@
               "type": "video",
               "path": "/video/user123/intro.mp4",
               "resizeMode": "cover",
+              "position": {
+                "x": 0.75,
+                "y": 0.25,
+                "originX": "right",
+                "originY": "top"
+              },
+              "width": 0.5,
+              "height": 0.5,
               "cutFrom": 0,
               "cutTo": 5
             },

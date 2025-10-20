@@ -276,10 +276,10 @@ Returns a complete configuration object that can be used with the validate_confi
 - Comprehensive audio system with multiple options
 
 **Layer Types:**
-- video: Display video files with timing control and Ken Burns effects
+- video: Display video files with timing control, Ken Burns effects, and enhanced positioning
 - image: Static images with positioning and Ken Burns effects
 - image-overlay: Images positioned over other content with timing
-- title: Large headline text with custom fonts (fontPath) or Google Fonts (googleFont: 'FontName:weight')
+- title: Large headline text with animation styles (fade-in, word-by-word, letter-by-letter) and enhanced positioning
 - subtitle: Smaller text for captions
 - news-title: Breaking news style with colored backgrounds
 - title-background: Titles with full-screen backgrounds
@@ -298,6 +298,18 @@ Returns a complete configuration object that can be used with the validate_confi
 - audioNorm: Audio normalization with ducking
 - keepSourceAudio: Keep audio from video layers
 - Audio layers within clips
+
+**Video & title layer Positioning:**
+- Position objects: { x: 0-1, y: 0-1, originX: left|center|right, originY: top|center|bottom }
+- Position strings: center, top, bottom, top-left, top-right, center-left, center-right, bottom-left, bottom-right
+- Video layers support both position objects and strings
+- Title layers support enhanced positioning with position objects
+
+**Title Layer Animation Styles:**
+- fade-in: Smooth fade-in effect (default)
+- word-by-word: Words appear sequentially
+- letter-by-letter: Letters appear sequentially
+- Zoom effects automatically disabled for word-by-word and letter-by-letter styles
 
 **Transitions:** 75+ transition effects including fade, wipe, circle, cube, glitch, zoom, etc.
 

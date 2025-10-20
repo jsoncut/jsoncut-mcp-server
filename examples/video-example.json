@@ -47,9 +47,15 @@
           {
             "type": "title-background",
             "text": "Welcome to JsonCut",
+            "style": "fade-in",
             "textColor": "#ffffff",
             "fontSize": 72,
-            "position": "center",
+            "position": {
+              "x": 0.5,
+              "y": 0.5,
+              "originX": "center",
+              "originY": "center"
+            },
             "background": {
               "type": "linear-gradient",
               "colors": ["#667eea", "#764ba2"],
@@ -110,9 +116,15 @@
           {
             "type": "title",
             "text": "Amazing Features",
+            "style": "letter-by-letter",
             "fontSize": 56,
             "textColor": "#ffffff",
-            "position": "center"
+            "position": {
+              "x": 0.5,
+              "y": 0.3,
+              "originX": "center",
+              "originY": "center"
+            }
           },
           {
             "type": "audio",
@@ -161,17 +173,39 @@
             "colors": ["#ff6b6b", "#4ecdc4"]
           },
           {
+            "type": "video",
+            "path": "/video/user123/demo-clip.mp4",
+            "resizeMode": "contain",
+            "position": {
+              "x": 0.8,
+              "y": 0.2,
+              "originX": "right",
+              "originY": "top"
+            },
+            "width": 0.3,
+            "height": 0.3,
+            "zoomDirection": "in",
+            "zoomAmount": 0.1
+          },
+          {
             "type": "title",
             "text": "Get Started Today",
+            "style": "word-by-word",
             "fontSize": 64,
             "textColor": "#ffffff",
-            "position": "center"
+            "position": {
+              "x": 0.2,
+              "y": 0.4,
+              "originX": "left",
+              "originY": "center"
+            }
           },
           {
             "type": "subtitle",
             "text": "Create amazing videos with JSON",
             "fontSize": 28,
-            "textColor": "#ffffff"
+            "textColor": "#ffffff",
+            "position": "bottom"
           }
         ]
       }
