@@ -76,8 +76,7 @@
         "properties": {
           "path": {
             "type": "string",
-            "description": "Path to audio file",
-            "pattern": "^/"
+            "description": "Path to audio file: relative path starting with '/' (e.g., /audio/user123/track.mp3) OR public URL with file extension (e.g., https://example.com/audio.mp3)"
           },
           "mixVolume": {
             "type": "number",
@@ -161,8 +160,7 @@
           "properties": {
             "fontPath": {
               "type": "string",
-              "description": "Default font path for text layers (cannot be used with googleFont)",
-              "pattern": "^/"
+              "description": "Default font path for text layers: relative path starting with '/' (e.g., /font/user123/custom.ttf) OR public URL with file extension (e.g., https://example.com/fonts/custom.ttf). Cannot be used with googleFont"
             },
             "googleFont": {
               "type": "string",
@@ -216,8 +214,7 @@
                     },
                     "path": {
                       "type": "string",
-                      "description": "Path to video file",
-                      "pattern": "^/"
+                      "description": "Path to video file: relative path starting with '/' (e.g., /video/user123/clip.mp4) OR public URL with file extension (e.g., https://example.com/video.mp4)"
                     },
                     "resizeMode": {
                       "type": "string",
@@ -298,8 +295,7 @@
                     },
                     "path": {
                       "type": "string",
-                      "description": "Path to image file",
-                      "pattern": "^/"
+                      "description": "Path to image file: relative path starting with '/' (e.g., /image/user123/photo.jpg) OR public URL with file extension (e.g., https://images.unsplash.com/photo-123.jpg or https://picsum.photos/1920/1080.jpg for placeholders)"
                     },
                     "resizeMode": {
                       "type": "string",
@@ -363,8 +359,7 @@
                     },
                     "path": {
                       "type": "string",
-                      "description": "Path to image file",
-                      "pattern": "^/"
+                      "description": "Path to image file: relative path starting with '/' (e.g., /image/user123/photo.jpg) OR public URL with file extension (e.g., https://images.unsplash.com/photo-123.jpg or https://picsum.photos/1920/1080.jpg for placeholders)"
                     },
                     "position": {
                       "description": "Position within frame",
@@ -674,8 +669,7 @@
                     },
                     "path": {
                       "type": "string",
-                      "description": "Path to audio file",
-                      "pattern": "^/"
+                      "description": "Path to audio file: relative path starting with '/' (e.g., /audio/user123/track.mp3) OR public URL with file extension (e.g., https://example.com/audio.mp3)"
                     },
                     "mixVolume": {
                       "type": "number",
@@ -708,8 +702,7 @@
                     },
                     "path": {
                       "type": "string",
-                      "description": "Path to audio file",
-                      "pattern": "^/"
+                      "description": "Path to audio file: relative path starting with '/' (e.g., /audio/user123/track.mp3) OR public URL with file extension (e.g., https://example.com/audio.mp3)"
                     },
                     "start": {
                       "type": "number",

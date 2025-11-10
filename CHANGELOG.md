@@ -5,6 +5,41 @@ All notable changes to the Jsoncut MCP Server will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-11-10
+
+### Added
+- **Docker Support**: Full Docker deployment support with multi-stage builds
+  - Docker image: `centerbit/jsoncut-mcp-server`
+  - HTTP server with StreamableHTTPServerTransport for remote MCP access
+  - Session management with per-user API key authentication
+  - Health check endpoint at `/health`
+  - Docker Compose configuration for easy local deployment
+  - Automated Docker publishing script with version extraction from CHANGELOG
+- **Public URL Support**: Schemas now accept public URLs with file extensions
+  - Image paths: Support for `https://` URLs with `.jpg`, `.png`, `.webp` extensions
+  - Video paths: Support for `https://` URLs with `.mp4`, `.mov` extensions
+  - Audio paths: Support for `https://` URLs with `.mp3`, `.wav` extensions
+  - Font paths: Support for `https://` URLs with `.ttf`, `.otf` extensions
+  - Picsum placeholder support: `https://picsum.photos/800/600.jpg` for testing
+- **HTTP Transport**: Modern StreamableHTTPServerTransport implementation
+  - POST endpoint for client requests
+  - GET endpoint for SSE streams
+  - DELETE endpoint for session termination
+  - Multi-user support with isolated sessions
+  - X-API-Key header authentication per request
+
+### Changed
+- **Validation Endpoint**: Fixed to use correct API path `/api/v1/jobs/validate`
+- **Schema Descriptions**: Updated all path descriptions to include public URL examples
+- **Transport Layer**: StreamableHTTPServerTransport
+
+### Technical Details
+- Docker image uses Node.js 22 Alpine for minimal size
+- Multi-stage build separates build and runtime dependencies
+- Session-based architecture allows multiple concurrent users
+- Compatible with MCP protocol version 2025-06-18
+- Supports both stdio (npx) and HTTP (Docker) transports
+
 ## [1.2.0] - 2025-01-19
 
 ### Added

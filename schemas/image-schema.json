@@ -86,7 +86,7 @@
               "type": { "const": "image" },
               "path": {
                 "type": "string",
-                "description": "Path to uploaded image (e.g., /image/2024-01-15/user123/file.jpg)"
+                "description": "Path to image: relative path starting with '/' (e.g., /image/2024-01-15/user123/file.jpg) OR public URL with file extension (e.g., https://images.unsplash.com/photo-123.jpg or https://picsum.photos/800/600.jpg for placeholders)"
               },
               "x": { "type": "number", "description": "X position in pixels" },
               "y": { "type": "number", "description": "Y position in pixels" },
@@ -151,7 +151,7 @@
               },
               "fontSize": { "type": "number", "default": 24 },
               "fontFamily": { "type": "string", "default": "Arial" },
-              "fontPath": { "type": "string", "description": "Path to custom font file (cannot be used with googleFont)" },
+              "fontPath": { "type": "string", "description": "Path to custom font file: relative path starting with '/' (e.g., /font/2024-01-15/user123/custom.ttf) OR public URL with file extension (e.g., https://example.com/fonts/custom.ttf). Cannot be used with googleFont" },
               "googleFont": { "type": "string", "description": "Google Font specification in format 'FontName:weight' e.g. 'Roboto:600' (cannot be used with fontPath)" },
               "color": { "type": "string", "default": "#000000" },
               "align": { "type": "string", "enum": ["left", "center", "right"] },

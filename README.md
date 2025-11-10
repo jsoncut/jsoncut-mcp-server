@@ -28,12 +28,51 @@
 
 ## 📦 Quick Start
 
-### Using npx (Recommended)
+### Using npx (Recommended for Local)
 
 ```bash
 export JSONCUT_API_KEY=your_api_key_here
 npx -y @jsoncut/mcp-server
 ```
+
+### Using Remote Server (Recommended)
+
+A public MCP server is available at **`https://mcp.jsoncut.com`**. No installation needed - just configure your MCP client with your API key:
+
+```json
+{
+  "jsoncut": {
+    "url": "https://mcp.jsoncut.com/mcp",
+    "headers": {
+      "x-api-key": "your_jsoncut_api_key_here"
+    }
+  }
+}
+```
+
+### Using Docker Locally (Optional)
+
+You can also run your own local server using Docker:
+
+```bash
+# Pull and run from Docker Hub
+docker run -d \
+  --name jsoncut-mcp \
+  -p 3210:3000 \
+  centerbit/jsoncut-mcp-server:latest
+
+# Access at: http://localhost:3210/mcp
+```
+
+Or use Docker Compose:
+```bash
+# Start the service
+docker-compose up -d
+
+# Access at: http://localhost:3210/mcp
+```
+
+📖 **See [DOCKER.md](./DOCKER.md) for complete Docker deployment guide**
 
 ### Get Your API Key
 
@@ -52,9 +91,50 @@ cp .env.example .env
 
 ## 🎯 MCP Client Configuration
 
-### Cursor IDE
+### Remote Server (Recommended)
+
+Use the public server at `https://mcp.jsoncut.com`:
+
+#### Cursor IDE
 
 Open **Cursor Settings** → **Features** → **MCP Servers** → **"+ Add New MCP Server"**
+
+```json
+{
+  "jsoncut": {
+    "url": "https://mcp.jsoncut.com/mcp",
+    "headers": {
+      "X-API-Key": "your_jsoncut_api_key_here"
+    }
+  }
+}
+```
+
+#### Claude Desktop
+
+Add to your `claude_desktop_config.json`:
+
+**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "jsoncut": {
+      "url": "https://mcp.jsoncut.com/mcp",
+      "headers": {
+        "X-API-Key": "your_jsoncut_api_key_here"
+      }
+    }
+  }
+}
+```
+
+### Local npx Mode
+
+For local development without network access:
+
+#### Cursor IDE
 
 ```json
 {
@@ -68,12 +148,7 @@ Open **Cursor Settings** → **Features** → **MCP Servers** → **"+ Add New M
 }
 ```
 
-### Claude Desktop
-
-Add to your `claude_desktop_config.json`:
-
-**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`  
-**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+#### Claude Desktop
 
 ```json
 {
@@ -83,6 +158,38 @@ Add to your `claude_desktop_config.json`:
       "args": ["-y", "@jsoncut/mcp-server"],
       "env": {
         "JSONCUT_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+### Local Docker Server
+
+If you're running your own local Docker server:
+
+#### Cursor IDE
+
+```json
+{
+  "jsoncut": {
+    "url": "http://localhost:3210/mcp",
+    "headers": {
+      "X-API-Key": "your_jsoncut_api_key_here"
+    }
+  }
+}
+```
+
+#### Claude Desktop
+
+```json
+{
+  "mcpServers": {
+    "jsoncut": {
+      "url": "http://localhost:3210/mcp",
+      "headers": {
+        "X-API-Key": "your_jsoncut_api_key_here"
       }
     }
   }
